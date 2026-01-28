@@ -15,10 +15,12 @@ export async function analyzeText(prompt: string) {
 
 }
 
-export async function analyzePdf(prompt:string, file: File) {
+export async function analyzePdf(prompt:string, pdfs: File[]) {
     const formData = new FormData();
     formData.append('prompt', prompt);
-    formData.append('file', file);
+    pdfs.forEach((pdf) => {
+        formData.append('pdf', pdf);
+    })
 
     const response = await fetch(`/api/analyze-pdf`, {
         method: "POST",

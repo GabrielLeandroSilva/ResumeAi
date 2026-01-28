@@ -6,48 +6,50 @@ import { analyzePdf, analyzeText } from "../services/resumeApi";
 import { AnalyzeResult } from "./AnalyzeResult";
 
 export function UploadForm() {
-    const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const [text, setText] = useState("");
-    const [file, setFile] = useState<File | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
+  const [text, setText] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
-    function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
-            setFile(selectedFile);
-        }
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selectedFiles = Array.from(e.target.files || []);
+    setFiles(selectedFiles);
+    setResult(null);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setResult(null);
+
+
+    if (!text && files.length === 0) {
+      setError("Informe um texto ou envie PDF");
+      return;
     }
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setError(null);
-        setResult(null);
+    try {
+      setLoading(true);
 
-        if (!text && !file) {
-            setError("Informe um texto ou envie PDF");
-            return;
-        }
+      const response = files.length > 0 ? await analyzePdf(text, files) : await analyzeText(text);
 
-        try {
-            setLoading(true);
-
-            const response = file ? await analyzePdf(text, file) : await analyzeText(text);
-
-            setResult(response);
-        } catch {
-            setError("Erro ao processar a análise.")
-        } finally {
-            setLoading(false);
-        }
-
-
+      setResult(response);
+    } catch {
+      setError("Erro ao processar a análise.")
+    } finally {
+      setLoading(false);
     }
 
-    return (
-        <>
+
+
+
+  }
+
+  return (
+    <>
       <form
         onSubmit={handleSubmit}
         className="space-y-4 border rounded-xl p-6 bg-white dark:bg-gray-900"
@@ -55,7 +57,7 @@ export function UploadForm() {
         <textarea
           placeholder="Cole aqui o conteúdo do currículo ou descrição..."
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => { setText(e.target.value);  setResult(null);}  }
           className="w-full min-h-[160px] resize-none rounded-lg border px-4 py-3 text-sm
                      focus:outline-none focus:ring-2 focus:ring-blue-500
                      dark:bg-gray-950 dark:border-gray-800"
@@ -73,10 +75,14 @@ export function UploadForm() {
               Anexar PDF
             </button>
 
-            {file && (
-              <span className="text-xs text-gray-500 truncate max-w-[200px]">
-                {file.name}
-              </span>
+            {files.length > 0 && (
+               <ul className="text-xs text-gray-500 space-y-1">
+               {files.map((file, index) => (
+                 <li key={index} className="truncate max-w-[260px]">
+                   • {file.name}
+                 </li>
+               ))}
+             </ul>
             )}
           </div>
 
@@ -102,6 +108,7 @@ export function UploadForm() {
           ref={fileInputRef}
           type="file"
           accept="application/pdf"
+          multiple
           className="hidden"
           onChange={handleFileChange}
         />
@@ -109,6 +116,6 @@ export function UploadForm() {
 
       <AnalyzeResult result={result} />
     </>
-    )
+  )
 
 }
