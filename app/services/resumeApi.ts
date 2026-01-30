@@ -34,3 +34,12 @@ export async function analyzePdf(prompt:string, pdfs: File[]) {
     return response.json();
 
 }
+
+export async function analyzeHealth() {
+    const response = await fetch(`/api/analyze-health`, {
+        method: "GET",
+        cache: "no-store",
+    });
+
+    return response.json();
+}

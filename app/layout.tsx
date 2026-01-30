@@ -2,7 +2,7 @@ import "./globals.css";
 import { Navbar } from "./components/Navbar";
 
 export const metadata = {
-  title: "resume-ai",
+  title: "Resume Ai",
   description: "Análise inteligente de currículos",
 };
 
