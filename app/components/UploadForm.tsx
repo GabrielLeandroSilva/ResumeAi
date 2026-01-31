@@ -43,16 +43,13 @@ export function UploadForm() {
       setLoading(false);
     }
 
-
-
-
   }
 
   return (
     <>
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 border rounded-xl p-6 bg-white dark:bg-gray-900"
+        className="space-y-4 border border-gray-700 rounded-xl p-6 bg-white dark:bg-gray-900"
       >
         <textarea
           placeholder="Cole aqui o conteúdo do currículo ou descrição..."
@@ -69,7 +66,7 @@ export function UploadForm() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               className="flex items-center gap-2 text-sm px-3 py-2 rounded-md
-                         border hover:bg-gray-100 dark:hover:bg-gray-800"
+                         border border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <Paperclip size={16} />
               Anexar PDF

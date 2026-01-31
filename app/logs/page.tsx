@@ -32,7 +32,7 @@ export default function LogsPage() {
         Logs da API ({data?.total})
       </h1>
 
-      <ul className="space-y-2 bg-gray-50 dark:bg-gray-900 p-4 rounded-md">
+      <ul className="space-y-2 border border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 rounded-md">
         {data?.logs.map((log, index) => (
           <li
             key={index}
