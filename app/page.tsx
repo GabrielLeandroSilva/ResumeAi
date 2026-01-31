@@ -1,3 +1,4 @@
+import ThemeToggle from "./components/ThemeToggle";
 import { UploadForm } from "./components/UploadForm";
 
 export default function Home() {

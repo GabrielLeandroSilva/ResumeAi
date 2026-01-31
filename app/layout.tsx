@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
+import { ThemeProviders } from "./providers/theme-provider";
+import ThemeToggle from "./components/ThemeToggle";
 
 export const metadata = {
   title: "Resume Ai",
@@ -15,12 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-        <Navbar />
-        <main className="max-w-5xl mx-auto p-6">
-          {children}
-        </main>
+        <ThemeProviders>
+          <Navbar />
+          <main className="max-w-5xl mx-auto p-6">
+            {children}
+          </main>
+          <ThemeToggle />
+        </ThemeProviders>
       </body>
     </html>
   );
