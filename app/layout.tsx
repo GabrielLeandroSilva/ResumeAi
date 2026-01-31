@@ -4,6 +4,9 @@ import { Navbar } from "./components/Navbar";
 export const metadata = {
   title: "Resume Ai",
   description: "Análise inteligente de currículos",
+  icons: {
+    icon: "/favicon.png",
+  }
 };
 
 export default function RootLayout({

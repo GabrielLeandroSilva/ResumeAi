@@ -1,3 +1,5 @@
+import { LogsResponse } from "../types/Log";
+
 export async function analyzeText(prompt: string) {
     const response = await fetch(`/api/analyze`, {
         method: 'POST',
@@ -40,6 +42,19 @@ export async function analyzeHealth() {
         method: "GET",
         cache: "no-store",
     });
+
+    return response.json();
+}
+
+export async function getLogs(): Promise<LogsResponse> {
+    const response = await fetch(`/api/analyze-log`, {
+        method: "GET",
+        cache: "no-store",
+    });
+
+    if (!response.ok) {
+        throw new Error("Erro ao buscar logs");
+    }
 
     return response.json();
 }
